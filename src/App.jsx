@@ -1,6 +1,9 @@
 
+import Answers from "./components/Answers"
 import CardList from "./components/CardList"
+import FruitImg from "./components/FruitImg"
 import MoveCount from "./components/MoveCount"
+import RestBtn from "./components/ResetBtn"
 
 export default function App() {
 
@@ -9,10 +12,12 @@ export default function App() {
         <div className="app wrapper">
             <h1 className="app__title">guess the picture by removing 3 panels.</h1>
             <MoveCount />
+            <div className="flex-wrapper">
+                <Answers />
+                <RestBtn />
+            </div>
             <main>
-                <figure className="main__figure">
-                    <img src="./assets/images/1.jpg" alt="" />
-                </figure>
+                <FruitImg />
                 <CardList />
             </main>
         </div>

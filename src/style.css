@@ -37,6 +37,36 @@ body {
     color: #292929;
 }
 
+.flex-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.app__reset-btn {
+    cursor: pointer;
+    padding: .5rem 1rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: .1em;
+    border: none;
+    background-color: #1899ff;
+    color: rgb(245, 245, 245);
+}
+
+.app__answer-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.app__select {
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
 .app__para {
     font-size: 1.8rem;
     font-weight: 600;

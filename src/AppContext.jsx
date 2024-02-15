@@ -12,6 +12,14 @@ export function AppContextProvider({children}) {
     const [moveCount, setMoveCount] = useState(0)
     const [isLimit, setIsLimit] = useState(false)
 
+    const [images, setImages] = useState([
+        "apple", "banana", "pumbkin"
+    ])
+    const [selectedImg, setSelectedImg] = useState("")
+
+    const [answer, setAnswer] = useState("")
+    const [runUseEffect, setRunUseEffect] = useState(false)
+
     useEffect(() => {
         const newArray = cards.map(card => {
             return {
@@ -20,7 +28,50 @@ export function AppContextProvider({children}) {
             }
         })
         setCards(newArray)
+
+        handleRandomImg()
     }, [])
+
+    useEffect(() => {
+        if(runUseEffect) {
+            handleGame()
+            setRunUseEffect(false)
+        }
+    }, [runUseEffect])
+
+    useEffect(() => {
+        if(moveCount == 3)
+        {
+            setIsLimit(true)
+        }
+    }, [moveCount])
+
+    const handleRandomImg = () => {
+        const rndNumber = Math.floor(Math.random() * images.length)
+        setSelectedImg(images[rndNumber])
+    }
+
+    const handleReset = () => {
+        handleRandomImg()
+        setAnswer("")
+
+        const newArray = cards.map(card => {
+            return {
+                ...card,
+                isVisible: true,
+                backgroundClr: randomColor()
+            }
+        })
+        setCards(newArray)
+        setMoveCount(0)
+        setIsLimit(false)
+
+    }
+
+    const handleAnswer = (e) => {
+        setAnswer(e.target.value)
+        setRunUseEffect(true)
+    }
 
     const handleHide = (index) => {
         
@@ -41,6 +92,27 @@ export function AppContextProvider({children}) {
         setMoveCount(prev => prev + 1)
     }
 
+    const handleGame = () => {
+        if(answer == "") {
+            console.log("Select your Answer!!!");
+            return;
+        }
+
+        if(answer == selectedImg) {
+            const newArray = cards.map(card => {
+                return {
+                    ...card,
+                    isVisible: false
+                }
+            })
+            setCards(newArray)
+            console.log("Winner!!")
+        }
+        else {
+            console.log("Good luck next time!!")
+        }
+    }
+
     const random = () => {
         const rndNumber = Math.floor(Math.random() * 255)
         return rndNumber
@@ -51,19 +123,23 @@ export function AppContextProvider({children}) {
     }
 
 
-    useEffect(() => {
-        if(moveCount == 3)
-        {
-            setIsLimit(true)
-        }
-    }, [moveCount])
+    
 
     const values = {
         cards,
         moveCount, 
         isLimit,
         handleHide, 
-        random
+        random,
+
+        selectedImg,
+        images,
+        answer,
+        handleAnswer,
+
+        handleGame,
+        handleReset,
+        setRunUseEffect,
     }
     
     return (
