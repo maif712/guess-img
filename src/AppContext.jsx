@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { images } from "./constants";
+import { random, randomColor, randomNumber } from "./utils/utils";
 
 
 const AppContext = createContext(null)
 
-export function AppContextProvider({children}) {
+export function AppContextProvider({ children }) {
 
     const [cards, setCards] = useState(new Array(9).fill({
         isVisible: true,
@@ -12,11 +14,7 @@ export function AppContextProvider({children}) {
     const [moveCount, setMoveCount] = useState(0)
     const [isLimit, setIsLimit] = useState(false)
 
-    const [images, setImages] = useState([
-        "apple", "banana", "pumbkin"
-    ])
     const [selectedImg, setSelectedImg] = useState("")
-
     const [answer, setAnswer] = useState("")
     const [runUseEffect, setRunUseEffect] = useState(false)
 
@@ -33,22 +31,20 @@ export function AppContextProvider({children}) {
     }, [])
 
     useEffect(() => {
-        if(runUseEffect) {
-            handleGame()
+        if (runUseEffect) {
+            handleWinCheck()
             setRunUseEffect(false)
         }
     }, [runUseEffect])
 
     useEffect(() => {
-        if(moveCount == 3)
-        {
+        if (moveCount == 3) {
             setIsLimit(true)
         }
     }, [moveCount])
 
     const handleRandomImg = () => {
-        const rndNumber = Math.floor(Math.random() * images.length)
-        setSelectedImg(images[rndNumber])
+        setSelectedImg(images[randomNumber()])
     }
 
     const handleReset = () => {
@@ -74,10 +70,9 @@ export function AppContextProvider({children}) {
     }
 
     const handleHide = (index) => {
-        
+
         const newArray = cards.map((card, i) => {
-            if(i === index)
-            {
+            if (i === index) {
                 return {
                     ...card,
                     isVisible: false
@@ -87,18 +82,18 @@ export function AppContextProvider({children}) {
                 return card
             }
         })
-        
+
         setCards(newArray)
         setMoveCount(prev => prev + 1)
     }
 
-    const handleGame = () => {
-        if(answer == "") {
+    const handleWinCheck = () => {
+        if (answer == "") {
             console.log("Select your Answer!!!");
             return;
         }
 
-        if(answer == selectedImg) {
+        if (answer == selectedImg) {
             const newArray = cards.map(card => {
                 return {
                     ...card,
@@ -113,23 +108,12 @@ export function AppContextProvider({children}) {
         }
     }
 
-    const random = () => {
-        const rndNumber = Math.floor(Math.random() * 255)
-        return rndNumber
-    }
-
-    const randomColor = () => {
-        return `rgb(${random()}, ${random()}, ${random()})`
-    }
-
-
     
-
     const values = {
         cards,
-        moveCount, 
+        moveCount,
         isLimit,
-        handleHide, 
+        handleHide,
         random,
 
         selectedImg,
@@ -137,11 +121,9 @@ export function AppContextProvider({children}) {
         answer,
         handleAnswer,
 
-        handleGame,
         handleReset,
-        setRunUseEffect,
     }
-    
+
     return (
         <AppContext.Provider value={values}>{children}</AppContext.Provider>
     )

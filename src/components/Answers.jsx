@@ -3,14 +3,11 @@ import { useAppContext } from "../AppContext"
 
 export default function Answers() {
 
-    const { images, answer, handleAnswer, handleGame, setRunUseEffect } = useAppContext()
+    const { images, answer, handleAnswer} = useAppContext()
 
     return (
         <div className="app__answer-wrapper">
-            <select value={answer} onChange={(e) => {
-                handleAnswer(e)
-                setRunUseEffect(true)
-            }} className="app__select">
+            <select value={answer} onChange={handleAnswer} className="app__select">
                 <option value={""}>--Select your Answer--</option>
                 {images.map(answer => {
                     return (
